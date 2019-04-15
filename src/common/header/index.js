@@ -6,6 +6,29 @@ import { actionCreators } from "./store";
 
 class Header extends Component {
   render() {
+    const getListArea = (show) => {
+      if (show) {
+        return (
+          <SearchInfo>
+            <SearchInfoTitle>
+              热门搜索
+              <SearchSwitch>换一批</SearchSwitch>
+            </SearchInfoTitle>
+            <div>
+              {
+                this.props.recommendList.map((item, index) => {
+                  return (
+                    <SearchInfoItem key={index}>{item}</SearchInfoItem>
+                  )
+                })
+              }
+            </div>
+          </SearchInfo>
+        )
+      } else {
+        return null;
+      }
+    };
     return (
       <HeaderWrapper>
         <Logo/>
@@ -29,22 +52,7 @@ class Header extends Component {
             <i
               className={this.props.focused ? "search-focused iconfont" : "iconfont"}
             >&#xe623;</i>
-            <SearchInfo>
-              <SearchInfoTitle>
-                热门搜索
-                <SearchSwitch>换一批</SearchSwitch>
-              </SearchInfoTitle>
-              <div>
-                <SearchInfoItem>教育</SearchInfoItem>
-                <SearchInfoItem>简书</SearchInfoItem>
-                <SearchInfoItem>教育</SearchInfoItem>
-                <SearchInfoItem>教育</SearchInfoItem>
-                <SearchInfoItem>教育</SearchInfoItem>
-                <SearchInfoItem>简书</SearchInfoItem>
-                <SearchInfoItem>教育</SearchInfoItem>
-                <SearchInfoItem>教育</SearchInfoItem>
-              </div>
-            </SearchInfo>
+            {getListArea(this.props.focused)}
           </SearchWrapper>
         </Nav>
         <Addition>
@@ -59,19 +67,20 @@ class Header extends Component {
 const mapStateToProps = (state) => {
   return {
     //focused: state.get("header").get("focused")
-    focused: state.getIn(["header", "focused"])
+    focused: state.getIn(["header", "focused"]),
+    recommendList: state.getIn(["header", "recommendList"])
   }
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
     handleSearchFocus() {
-      const action = actionCreators.handleSearchFocus();
-      dispatch(action);
+      dispatch(actionCreators.handleSearchFocus());
+      dispatch(actionCreators.handleRecommendList());
+
     },
     handleSearchBlur() {
-      const action = actionCreators.handleSearchBlur();
-      dispatch(action);
+      dispatch(actionCreators.handleSearchBlur());
     }
   }
 };

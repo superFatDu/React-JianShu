@@ -170,7 +170,7 @@ export const SearchInfoTitle = styled.div`
 
 export const SearchSwitch  = styled.span`
   float: right;
-  font-size: 13px;
+  font-size: 12px;
 `;
 
 export const SearchInfoItem = styled.a`

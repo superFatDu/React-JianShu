@@ -1,8 +1,9 @@
-import { SEARCH_FOCUS, SEARCH_BLUR } from "./actionTypes";
+import { SEARCH_FOCUS, SEARCH_BLUR, GET_RECOMMEND_LIST } from "./actionTypes";
 import { fromJS } from "immutable";
 
 const defaultState = fromJS({
-  focused: false
+  focused: false,
+  recommendList: []
 });
 
 export default (state = defaultState, action) => {
@@ -14,6 +15,9 @@ export default (state = defaultState, action) => {
   }
   if (action.type === SEARCH_BLUR) {
     return state.set("focused", false);
+  }
+  if (action.type === GET_RECOMMEND_LIST) {
+    return state.set("recommendList", action.value);
   }
   return state;
 }
