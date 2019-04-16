@@ -1,5 +1,18 @@
 import React, { Component } from "react";
-import { HeaderWrapper, Logo, Nav, NavItem, NavSearch, Addition, Button, SearchInfo, SearchInfoTitle, SearchSwitch, SearchInfoItem, SearchWrapper } from "./style";
+import {
+  HeaderWrapper,
+  Logo,
+  Nav,
+  NavItem,
+  NavSearch,
+  Addition,
+  Button,
+  SearchInfo,
+  SearchInfoTitle,
+  SearchSwitch,
+  SearchInfoItem,
+  SearchWrapper
+} from "./style";
 import { CSSTransition } from "react-transition-group";
 import { connect } from "react-redux";
 import { actionCreators } from "./store";
@@ -7,20 +20,34 @@ import { actionCreators } from "./store";
 class Header extends Component {
   render() {
     const getListArea = (show) => {
-      if (show) {
+      const { recommendList, pageNum, pageTotal, handleSearchMouseEnter, handleSearchMouseLeave, handleSwitchList, mouseIn } = this.props;
+      const temptRecommendList = recommendList.toJS();
+      const tempList = [];
+      if (temptRecommendList.length) {
+        for (let i = (pageNum - 1) * 10; i < pageNum * 10; i++) {
+          if (temptRecommendList[i]) {
+            tempList.push(
+              <SearchInfoItem key={temptRecommendList[i]}>{temptRecommendList[i]}</SearchInfoItem>
+            )
+          }
+        }
+      }
+      if (show || mouseIn) {
         return (
-          <SearchInfo>
+          <SearchInfo
+            onMouseEnter={handleSearchMouseEnter}
+            onMouseLeave={handleSearchMouseLeave}
+          >
             <SearchInfoTitle>
               热门搜索
-              <SearchSwitch>换一批</SearchSwitch>
+              <SearchSwitch onClick={() => handleSwitchList(pageNum, pageTotal, this.spin)}>
+                <i ref={(i) => {this.spin = i}} className="iconfont spin">&#xe7b1;</i>
+                换一批
+              </SearchSwitch>
             </SearchInfoTitle>
             <div>
               {
-                this.props.recommendList.map((item, index) => {
-                  return (
-                    <SearchInfoItem key={index}>{item}</SearchInfoItem>
-                  )
-                })
+                tempList
               }
             </div>
           </SearchInfo>
@@ -45,12 +72,12 @@ class Header extends Component {
             >
               <NavSearch
                 className={this.props.focused ? "search-focused" : ""}
-                onFocus={this.props.handleSearchFocus}
+                onFocus={() => this.props.handleSearchFocus(this.props.recommendList)}
                 onBlur={this.props.handleSearchBlur}
               />
             </CSSTransition>
             <i
-              className={this.props.focused ? "search-focused iconfont" : "iconfont"}
+              className={this.props.focused ? "search-focused iconfont search-icon" : "iconfont search-icon"}
             >&#xe623;</i>
             {getListArea(this.props.focused)}
           </SearchWrapper>
@@ -66,21 +93,45 @@ class Header extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    //focused: state.get("header").get("focused")
     focused: state.getIn(["header", "focused"]),
-    recommendList: state.getIn(["header", "recommendList"])
+    recommendList: state.getIn(["header", "recommendList"]),
+    pageNum: state.getIn(["header", "pageNum"]),
+    pageTotal: state.getIn(["header", "pageTotal"]),
+    mouseIn: state.getIn(["header", "mouseIn"])
   }
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    handleSearchFocus() {
+    handleSearchFocus(list) {
+      console.log(list.size);
+      (list.size === 0) && dispatch(actionCreators.handleRecommendList());
       dispatch(actionCreators.handleSearchFocus());
-      dispatch(actionCreators.handleRecommendList());
-
     },
     handleSearchBlur() {
       dispatch(actionCreators.handleSearchBlur());
+    },
+    handleSearchMouseEnter() {
+      dispatch(actionCreators.handleSearchMouseEnter())
+    },
+    handleSearchMouseLeave() {
+      dispatch(actionCreators.handleSearchMouseLeave())
+    },
+    handleSwitchList(pageNum, pageTotal, spin) {
+      let rotateAngle = spin.style.transform.replace(/[^0-9]/ig, "");
+      if (rotateAngle) {
+        rotateAngle = parseInt(rotateAngle, 10);
+      } else {
+        rotateAngle = 0;
+      }
+      rotateAngle += 360;
+      spin.style.transform = 'rotate('+rotateAngle+'deg)';
+      console.log(spin.style);
+      if (pageNum < pageTotal) {
+        dispatch(actionCreators.handleSwitchList(++pageNum));
+      } else {
+        dispatch(actionCreators.handleSwitchList(1));
+      }
     }
   }
 };

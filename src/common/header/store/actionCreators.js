@@ -1,18 +1,32 @@
-import { SEARCH_FOCUS, SEARCH_BLUR, GET_RECOMMEND_LIST } from "./actionTypes";
+import * as actionTypes from "./actionTypes";
 import axios from "axios";
 import { fromJS } from "immutable";
 
+const handleRecomList = (data) => ({
+  type: actionTypes.GET_RECOMMEND_LIST,
+  value: fromJS(data),
+  pageTotal: Math.ceil(data.length / 10)
+});
+
 export const handleSearchFocus = () => ({
-  type: SEARCH_FOCUS
+  type: actionTypes.SEARCH_FOCUS
 });
 
 export const handleSearchBlur = () => ({
-  type: SEARCH_BLUR
+  type: actionTypes.SEARCH_BLUR
 });
 
-const handleRecomList = (data) => ({
-  type: GET_RECOMMEND_LIST,
-  value: fromJS(data)
+export const handleSearchMouseEnter = () => ({
+  type: actionTypes.SEARCH_MOUSE_ENTER
+});
+
+export const handleSearchMouseLeave = () => ({
+  type: actionTypes.SEARCH_MOUSE_LEAVE
+});
+
+export const handleSwitchList = (value) => ({
+  type: actionTypes.SWITCH_LIST,
+  value
 });
 
 export const handleRecommendList = () => {

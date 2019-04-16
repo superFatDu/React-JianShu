@@ -1,23 +1,36 @@
-import { SEARCH_FOCUS, SEARCH_BLUR, GET_RECOMMEND_LIST } from "./actionTypes";
+import * as actionTypes from "./actionTypes";
 import { fromJS } from "immutable";
 
 const defaultState = fromJS({
   focused: false,
-  recommendList: []
+  recommendList: [],
+  pageNum: 1,
+  pageTotal: 1,
+  mouseIn: false
 });
 
 export default (state = defaultState, action) => {
-  if (action.type === SEARCH_FOCUS) {
-    /*const newState = JSON.parse(JSON.stringify(state));
-    newState.focused = true;
-    return newState;*/
-    return state.set("focused", true);
+  switch (action.type) {
+    case actionTypes.SEARCH_FOCUS:
+      return state.merge({
+        focused: true,
+        pageNum: 1
+      });
+    case actionTypes.SEARCH_BLUR:
+      return state.set("focused", false);
+    case actionTypes.GET_RECOMMEND_LIST:
+      //return state.set("recommendList", action.value).set("pageTotal", action.pageTotal);
+      return state.merge({
+        recommendList: action.value,
+        pageTotal: action.pageTotal
+      });
+    case actionTypes.SEARCH_MOUSE_ENTER:
+      return state.set("mouseIn", true);
+    case actionTypes.SEARCH_MOUSE_LEAVE:
+      return state.set("mouseIn", false);
+    case actionTypes.SWITCH_LIST:
+      return state.set("pageNum", action.value);
+    default:
+      return state;
   }
-  if (action.type === SEARCH_BLUR) {
-    return state.set("focused", false);
-  }
-  if (action.type === GET_RECOMMEND_LIST) {
-    return state.set("recommendList", action.value);
-  }
-  return state;
 }

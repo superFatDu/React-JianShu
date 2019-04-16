@@ -57,7 +57,7 @@ export const NavItem = styled.div`
 export const SearchWrapper = styled.div`
   position: relative;
   float: left;
-  .iconfont {
+  .search-icon {
     font-size: 16px;
     position: absolute;
     right: 5px;
@@ -171,6 +171,20 @@ export const SearchInfoTitle = styled.div`
 export const SearchSwitch  = styled.span`
   float: right;
   font-size: 12px;
+  &:hover {
+    cursor: pointer;
+    color: #333;
+  }
+  &::selection {
+    background: transparent;
+  }
+  .spin {
+    display: inline-block;
+    font-size: 14px;
+    padding: 0 5px;
+    transition: all 0.2s ease-in;
+    transform-origin: center center;
+  }
 `;
 
 export const SearchInfoItem = styled.a`
