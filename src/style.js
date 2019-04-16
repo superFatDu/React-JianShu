@@ -1,4 +1,4 @@
-import { createGlobalStyle } from "styled-components";
+import styled, { createGlobalStyle } from "styled-components";
 
 export const GlobalStyle = createGlobalStyle`
 html, body, div, span, applet, object, iframe,
@@ -44,4 +44,10 @@ table {
   border-collapse: collapse;
   border-spacing: 0;
 }
+`;
+
+export const RouteStyle = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
 `;
