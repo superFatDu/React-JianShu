@@ -4,47 +4,42 @@ import {
   TopicItem,
   TopicItemImg
 }
-from "../style"
+from "../style";
+import { connect } from "react-redux";
+import { actionCreators } from "../store";
 
 class Topic extends Component {
   render() {
     return (
       <TopicWrapper>
-        <TopicItem>
-          <TopicItemImg/>
-          简书
-        </TopicItem>
-        <TopicItem>
-          <TopicItemImg/>
-          996
-        </TopicItem>
-        <TopicItem>
-          <TopicItemImg/>
-          京东
-        </TopicItem>
-        <TopicItem>
-          <TopicItemImg/>
-          腾讯
-        </TopicItem>
-        <TopicItem>
-          <TopicItemImg/>
-          简书
-        </TopicItem>
-        <TopicItem>
-          <TopicItemImg/>
-          996
-        </TopicItem>
-        <TopicItem>
-          <TopicItemImg/>
-          京东
-        </TopicItem>
-        <TopicItem>
-          <TopicItemImg/>
-          腾讯
-        </TopicItem>
+        {
+          this.props.topicList.map(item => (
+            <TopicItem key={item}>
+              <TopicItemImg/>
+              {item}
+            </TopicItem>
+          ))
+        }
       </TopicWrapper>
     )
   }
+  componentDidMount() {
+    this.props.getTopicList();
+  }
 }
 
-export default Topic;
+const mapStateToProps = (state) => {
+  return {
+    topicList: state.getIn(["home", "topicList"])
+  }
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    getTopicList() {
+      dispatch(actionCreators.handleTopicList());
+    }
+  }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Topic);

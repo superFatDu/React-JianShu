@@ -18,6 +18,7 @@ export const HomeLeftBanner = styled.div`
   height: 240px;
   background: url(${bannerImg}) 50% 50% no-repeat;
   background-size: cover;
+  border-radius: 5px;
 `;
 
 
@@ -37,21 +38,22 @@ export const TopicItem = styled.div`
   height: 32px;
   line-height: 32px;
   background: #f7f7f7;
-  font-size: 14px;
+  font-size: 12px;
   color: #000;
   box-sizing: border-box;
   border: 1px solid #dcdcdc;
   border-radius: 4px;
-  padding-right: 20px;
+  padding-right: 15px;
   margin-right: 15px;
   margin-bottom: 15px;
+  display: flex;
+  align-items: center;
 `;
 
 export const TopicItemImg = styled.img.attrs({
   src: `${topicImg}`
 })`
-  width: 30px;
-  height: 30px;
-  vertical-align: top;
+  width: 32px;
+  height: 32px;
   margin-right: 10px;
 `;
