@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 import {
   HeaderWrapper,
   Logo,
@@ -16,6 +17,7 @@ import {
 import { CSSTransition } from "react-transition-group";
 import { connect } from "react-redux";
 import { actionCreators } from "./store";
+import { actionCreators as actionLogCreators } from "../../pages/login/store";
 
 class Header extends Component {
   render() {
@@ -58,11 +60,20 @@ class Header extends Component {
     };
     return (
       <HeaderWrapper>
-        <Logo/>
+        <Link to="/">
+          <Logo/>
+        </Link>
         <Nav>
           <NavItem className="left active">首页</NavItem>
           <NavItem className="left">下载APP</NavItem>
-          <NavItem className="right">登录</NavItem>
+          {/*<Link to={{pathname: "/login"}}>
+            <NavItem className="right">登录</NavItem>
+          </Link>*/}
+          {
+            this.props.loginStatus
+              ? <NavItem className="right" onClick={this.props.handleLogout}>退出</NavItem>
+              : <Link to={{pathname: "/login"}}><NavItem className="right">登录</NavItem></Link>
+          }
           <NavItem className="right"><i className="iconfont">&#xe636;</i></NavItem>
           <SearchWrapper>
             <CSSTransition
@@ -83,7 +94,9 @@ class Header extends Component {
           </SearchWrapper>
         </Nav>
         <Addition>
-          <Button className="write"><i className="iconfont">&#xe62d;</i>写文章</Button>
+          <Link to="/write">
+            <Button className="write"><i className="iconfont">&#xe62d;</i>写文章</Button>
+          </Link>
           <Button className="reg">注册</Button>
         </Addition>
       </HeaderWrapper>
@@ -97,7 +110,8 @@ const mapStateToProps = (state) => {
     recommendList: state.getIn(["header", "recommendList"]),
     pageNum: state.getIn(["header", "pageNum"]),
     pageTotal: state.getIn(["header", "pageTotal"]),
-    mouseIn: state.getIn(["header", "mouseIn"])
+    mouseIn: state.getIn(["header", "mouseIn"]),
+    loginStatus: state.getIn(["login", "logStatus"])
   }
 };
 
@@ -132,6 +146,9 @@ const mapDispatchToProps = (dispatch) => {
       } else {
         dispatch(actionCreators.handleSwitchList(1));
       }
+    },
+    handleLogout() {
+      dispatch(actionLogCreators.handleLogout());
     }
   }
 };

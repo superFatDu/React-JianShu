@@ -5,12 +5,14 @@ export const HeaderWrapper = styled.div`
   width: 100%;
   height: 56px;
   border-bottom: 1px solid #f0f0f0;
-  position: relative;
+  background: #fff;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 999;
 `;
 
-export const Logo = styled.a.attrs({
-  href: "/"
-})`
+export const Logo = styled.div`
   width: 100px;
   height: 56px;
   display: inline-block;
@@ -25,8 +27,8 @@ export const Nav = styled.div`
   width: 960px;
   height: 100%;
   margin: 0 auto;
-  box-sizing: border-box;
-  padding-right: 70px;
+  /*box-sizing: border-box;
+  padding-right: 70px;*/
 `;
 
 export const NavItem = styled.div`

@@ -26,7 +26,10 @@ article, aside, details, figcaption, figure,
   footer, header, hgroup, menu, nav, section {
   display: block;
 }
+html,
 body {
+  width: 100%;
+  height: 100%;
   line-height: 1;
 }
 ol, ul {
@@ -44,10 +47,15 @@ table {
   border-collapse: collapse;
   border-spacing: 0;
 }
+a {
+  text-decoration: none;
+  color: transparent;
+}
 `;
 
 export const RouteStyle = styled.div`
   width: 100%;
-  display: flex;
-  justify-content: center;
+  height: 100%;
+  box-sizing: border-box;
+  padding-bottom: 20px;
 `;
